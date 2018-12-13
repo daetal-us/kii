@@ -84,6 +84,54 @@ func TestExtractFromTwitterCard(t *testing.T) {
 	}
 }
 
+func TestExtractFromMicrosoftTileImage(t *testing.T) {
+	html := `
+		<html>
+			<head>
+				<meta name="msapplication-TileImage" content="a" />
+			</head>
+		</html>
+	`
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := findMicrosoftTileImage(doc)
+
+	if len(result) != 1 {
+		t.Fatal("Expected 1 result.")
+	}
+
+	if result[0] != "a" {
+		t.Errorf("Unexpected result: %v", result[0])
+	}
+}
+
+func TestExtractFromAppleTouchIcon(t *testing.T) {
+	html := `
+		<html>
+			<head>
+				<link rel="apple-touch-icon" href="a" />
+			</head>
+		</html>
+	`
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := findAppleTouchIcon(doc)
+
+	if len(result) != 1 {
+		t.Fatal("Expected 1 result.")
+	}
+
+	if result[0] != "a" {
+		t.Errorf("Unexpected result: %v", result[0])
+	}
+}
+
 func TestExtractFromLink(t *testing.T) {
 	html := `
 		<html>

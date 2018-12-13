@@ -8,8 +8,10 @@ In order of preference (default sort order):
 
 - [JSON-LD][json-ld]
 - [Open Graph][og]
-- [Twitter Cards Markup][twitter]
 - [HTML External Resource Link][link]
+- [Apple Touch Icon][apple]
+- [Twitter Cards Markup][twitter]
+- [Microsoft Tile Image][ms]
 - [Favicon][favicon]
 
 ## Installation
@@ -94,7 +96,9 @@ func extractFromURL() {
 [webpage]:https://en.wikipedia.org/wiki/Web_page
 [json-ld]:https://json-ld.org
 [og]:http://ogp.me
+[apple]:https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
 [twitter]:https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/markup
+[ms]:https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/dn255024(v=vs.85)#msapplication-TileImage
 [link]:https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
 [html]:https://www.w3.org/html
 [array]:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
