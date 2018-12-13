@@ -64,7 +64,7 @@ func extractFromHTML() {
 		</body>
 	</html>
 	`
-	results, err := extract.FromHTML(html)
+	results, err := kii.FromHTML(html)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -76,7 +76,7 @@ func extractFromHTML() {
 }
 
 func extractFromURL() {
-	results, err := extract.FromURL("http://apple.com")
+	results, err := kii.FromURL("http://apple.com")
 	if err != nil {
 		log.Fatal(err)
 	}
