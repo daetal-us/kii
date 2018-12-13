@@ -15,7 +15,7 @@ In order of preference (default sort order):
 ## Installation
 
 ```sh
-go get github.com/daetal-us/kii
+go get github.com/daetal-us/kii/cmd/kii
 ```
 
 ## Usage
