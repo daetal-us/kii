@@ -12,6 +12,10 @@ import (
 )
 
 func FromURL(u string) (result []string, err error) {
+	base, err := url.Parse(u)
+	if err != nil {
+		return result, err
+	}
 	res, err := http.Get(u)
 	if err != nil {
 		return result, err
@@ -20,27 +24,34 @@ func FromURL(u string) (result []string, err error) {
 	if res.StatusCode != http.StatusOK {
 		return result, errors.New(res.Status)
 	}
+	if (res.Request.Response != nil) {
+		base, err = res.Request.Response.Location()
+		if err != nil {
+			return result, err
+		}
+	}
 	result, err = FromReader(res.Body)
 	if err != nil {
 		return result, err
 	}
-	f, err := url.Parse("/favicon.ico")
-	if err != nil {
-		return result, err
+	result = append(result, "/favicon.ico")
+	icons := []string{}
+	for _, i := range result {
+		u, err := url.Parse(i)
+		if err != nil {
+			continue
+		}
+		if !u.IsAbs() {
+			if u.Host != "" {
+				u.Scheme = base.Scheme
+				i = u.String()
+			} else {
+				i = base.ResolveReference(u).String()
+			}
+		}
+		icons = append(icons, i)
 	}
-	base, err := url.Parse(u)
-	if err != nil {
-		return result, err
-	}
-	favicon := base.ResolveReference(f).String()
-	res, err = http.Get(favicon)
-	if err != nil {
-		return result, err
-	}
-	if res.StatusCode == http.StatusOK {
-		result = append(result, favicon)
-	}
-	return result, nil
+	return icons, nil
 }
 
 func FromHTML(html string) (result []string, err error) {
@@ -52,14 +63,12 @@ func FromReader(r io.Reader) (results []string, err error) {
 	if err != nil {
 		return results, err
 	}
-
 	results = append(results, findJSONLD(doc)...)
 	results = append(results, findOpenGraph(doc)...)
 	results = append(results, findLink(doc)...)
 	results = append(results, findAppleTouchIcon(doc)...)
 	results = append(results, findTwitterCard(doc)...)
 	results = append(results, findMicrosoftTileImage(doc)...)
-
 	return results, nil
 }
 
